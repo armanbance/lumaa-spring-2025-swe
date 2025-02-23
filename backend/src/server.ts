@@ -1,6 +1,19 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
 
 const app = express();
+
+const PORT = process.env.PORT || 3000;
+
+interface User {
+  id: string;
+  username: string;
+  password: string;
+}
 
 interface Task {
   id: string;
@@ -16,6 +29,39 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 let tasks: Task[] = [];
+let users: User[] = [];
+
+app.post("/auth/register", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser: User = {
+    id: crypto.randomUUID(),
+    username,
+    password: hashedPassword,
+  };
+  users.push(newUser);
+  res.status(201).json({ message: "User registered successfully" });
+
+  console.log(users);
+});
+
+app.post("/auth/login", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const user = users.find((u) => u.username === username);
+  if (!user) {
+    res.status(401).json({ message: "Invalid credentials" });
+    return;
+  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    res.status(401).json({ message: "Invalid credentials" });
+    return;
+  }
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
+    expiresIn: "1h",
+  });
+  res.json({ token });
+});
 
 app.get("/tasks", (req: Request, res: Response) => {
   const userId = req.query.userId as string;
@@ -66,5 +112,5 @@ app.delete("/tasks/:id", (req: Request, res: Response) => {
 // Start the server on port 3000
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
