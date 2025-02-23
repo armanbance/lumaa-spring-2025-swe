@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { registerUser } from "../utils/api";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -8,7 +9,12 @@ const Register: React.FC = () => {
     e.preventDefault();
     console.log("Registering with:", { username, password });
 
-    // TODO: Call backend API for user registration
+    try {
+      const response = await registerUser(username, password);
+      console.log("User registered successfully:", response);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   return (

@@ -2,10 +2,17 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+  })
+);
 
 const PORT = process.env.PORT || 3000;
 

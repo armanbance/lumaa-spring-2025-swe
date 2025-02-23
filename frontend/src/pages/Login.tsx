@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../utils/api";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -9,9 +10,13 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Logging in with:", { username, password });
-
-    localStorage.setItem("token", "fake-jwt-token");
-    navigate("/tasks"); // Redirect to tasks page
+    try {
+      const response = await loginUser(username, password);
+      localStorage.setItem("token", response.token);
+      navigate("/tasks"); // Redirect to tasks page
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
