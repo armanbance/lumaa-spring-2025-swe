@@ -1,3 +1,5 @@
+Lumaa Coding Project
+
 1. Clone the Repository
    First, clone the repository to your local machine:
    git clone <repository-url>
