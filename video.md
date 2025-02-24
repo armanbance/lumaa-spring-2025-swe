@@ -1,3 +1,3 @@
 # Screen Recording
 
-[Click here to view the screen recording](assets/screen-recording.mp4)
+[Click here to view the screen recording](assets/recording.mp4)
