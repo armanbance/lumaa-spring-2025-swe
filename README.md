@@ -1,4 +1,4 @@
-Lumaa Coding Project
+#Lumaa Coding Project Setup
 
 1. Clone the Repository
    First, clone the repository to your local machine:
@@ -34,7 +34,7 @@ This makes sure you install the dependencies for both the backend and the fronte
 
    DB_NAME=your_db_name
 
-   JWT_SECRET=your_jwt_secret
+   JWT_SECRET=eb6b-XT+R867\-VFsH\BaE0m4:@v--27 #just for testing purposes, would change in the future for security purposes
 
    PORT=3000
 
