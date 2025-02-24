@@ -1,7 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem("token"));
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
   return (
     <div>
       <nav className="bg-white p-4 shadow-lg">
@@ -14,30 +33,45 @@ function Navbar() {
               Home
             </Link>
           </li>
-          <li>
-            <Link
-              to="/register"
-              className=" hover:text-blue-200 font-semibold transition duration-300"
-            >
-              Register
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/login"
-              className=" hover:text-blue-200 font-semibold transition duration-300"
-            >
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/tasks"
-              className="text-white hover:text-blue-200 font-semibold transition duration-300"
-            >
-              Tasks
-            </Link>
-          </li>
+          {isLoggedIn ? (
+            <>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="hover:text-blue-200 font-semibold transition duration-300 bg-transparent border-none cursor-pointer"
+                >
+                  Logout
+                </button>
+              </li>
+              <li>
+                <Link
+                  to="/tasks"
+                  className="hover:text-blue-200 font-semibold transition duration-300"
+                >
+                  Tasks
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  to="/register"
+                  className="hover:text-blue-200 font-semibold transition duration-300"
+                >
+                  Register
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/login"
+                  className="hover:text-blue-200 font-semibold transition duration-300"
+                >
+                  Login
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </div>

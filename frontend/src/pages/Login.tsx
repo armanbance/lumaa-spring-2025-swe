@@ -5,6 +5,7 @@ import { loginUser } from "../utils/api";
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notification, setNotification] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -12,10 +13,18 @@ const Login: React.FC = () => {
     console.log("Logging in with:", { username, password });
     try {
       const response = await loginUser(username, password);
+      setNotification("User logged in successfully! Redirecting to tasks...");
       localStorage.setItem("token", response.token);
-      navigate("/tasks"); // Redirect to tasks page
+      setTimeout(() => {
+        setNotification("");
+        navigate("/tasks");
+      }, 2000);
     } catch (error) {
       console.error("Login failed:", error);
+      setNotification("Login failed. Please try again.");
+      setTimeout(() => {
+        setNotification("");
+      }, 2000);
     }
   };
 
@@ -25,6 +34,9 @@ const Login: React.FC = () => {
         <h2 className="text-3xl text-black font-bold mb-6 text-center">
           Login
         </h2>
+        {notification && (
+          <div className="text-green-500 text-center mb-4">{notification}</div>
+        )}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-gray-700 font-medium">Username:</label>

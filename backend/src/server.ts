@@ -3,14 +3,29 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import { Client } from "pg";
 
 dotenv.config();
+
+const client = new Client({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  database: process.env.DB_NAME,
+});
+
+client
+  .connect()
+  .then(() => console.log("Connected to PostgreSQL successfully!"))
+  .catch((err: any) => console.error("Connection error", err))
+  .finally(() => client.end());
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: "http://localhost:5173",
   })
 );
 

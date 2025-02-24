@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { registerUser } from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notification, setNotification] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -11,7 +14,12 @@ const Register: React.FC = () => {
 
     try {
       const response = await registerUser(username, password);
+      setNotification("User registered successfully! Redirecting to login...");
       console.log("User registered successfully:", response);
+      setTimeout(() => {
+        setNotification("");
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -23,6 +31,9 @@ const Register: React.FC = () => {
         <h2 className="text-3xl text-black font-bold mb-6 text-center">
           Register
         </h2>
+        {notification && (
+          <div className="text-green-500 text-center mb-4">{notification}</div>
+        )}
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
             <label className="block text-black font-medium">Username:</label>
