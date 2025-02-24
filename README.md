@@ -55,3 +55,5 @@ npm run dev
 8. Salary Expectations
 
 I am looking for a salary of about $25/hour, but the experience and skills I build mean more than the amount of money I make, so this salary rate is flexible.
+
+[Click here to view the screen recording](assets/recording.mp4)
