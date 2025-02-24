@@ -22,6 +22,10 @@ const Register: React.FC = () => {
       }, 2000);
     } catch (error) {
       console.error("Registration failed:", error);
+      setNotification("Registration failed. Please try again.");
+      setTimeout(() => {
+        setNotification("");
+      }, 2000);
     }
   };
 

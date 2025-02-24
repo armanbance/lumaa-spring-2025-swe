@@ -10,9 +10,7 @@ module.exports = {
       description: { type: "text" },
       isComplete: { type: "boolean", default: false },
       userId: {
-        type: "uuid",
-        references: "users(id)",
-        onDelete: "CASCADE",
+        type: "string",
       },
       created_at: { type: "timestamp", default: pgm.func("current_timestamp") },
     });

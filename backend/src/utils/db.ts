@@ -11,4 +11,11 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
-export const query = (text: string, params?: any[]) => pool.query(text, params);
+export const query = async (text: string, params?: any[]) => {
+  try {
+    return await pool.query(text, params);
+  } catch (err) {
+    console.error("Database query error:", err);
+    throw err;
+  }
+};

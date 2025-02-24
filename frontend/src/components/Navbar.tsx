@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleStorageChange = () => {
+    const checkAuthStatus = () => {
       setIsLoggedIn(!!localStorage.getItem("token"));
     };
-    window.addEventListener("storage", handleStorageChange);
 
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    checkAuthStatus();
+
+    const interval = setInterval(checkAuthStatus, 500);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
